@@ -37,7 +37,7 @@ public class PantallaPrincipalController {
 
     @FXML
     private void initialize() {
-        // Aquí puedes inicializar componentes si necesitas
+        lblCaloriasRestantes.setText(String.valueOf(UsuarioActualController.getInstancia().getUsuarioActual().getObjetivoCalorias()));
     }
 
     @FXML
@@ -77,7 +77,8 @@ public class PantallaPrincipalController {
         progreso = Math.min(progreso, 1.0);
 
         barraCalorias.setProgress(progreso);
-        lblProgreso.setText((int)(progreso * 100) + "%");
+        lblCaloriasRestantes.setText(String.valueOf(UsuarioActualController.getInstancia().getUsuarioActual().getObjetivoCalorias()));
+
     }
 
     @FXML

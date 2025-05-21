@@ -30,6 +30,7 @@ public class InicioSesionController {
 
         UsuarioDAO dao = new UsuarioDAO();
         Usuario usuario = dao.buscarPorEmailYContraseña(email, contraseña);
+        UsuarioActualController.getInstancia().setUsuarioActual(usuario);
 
         if (usuario != null) {
             try {
