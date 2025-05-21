@@ -17,7 +17,10 @@ public class CuentaController {
 
     private Usuario usuarioActual;
 
-    // Este método lo puedes llamar desde el controlador principal al cargar esta vista
+    /**
+     * Inicializa los campos de texto con los datos del usuario actual.
+     *
+     */
     public void setUsuario(Usuario usuario) {
         this.usuarioActual= usuario;
         campoNombre.setText(usuario.getNombreUsuario());
