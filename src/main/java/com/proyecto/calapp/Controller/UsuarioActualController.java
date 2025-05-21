@@ -1,6 +1,6 @@
-package Controller;
+package com.proyecto.calapp.Controller;
 
-import model.Usuario;
+import com.proyecto.calapp.model.Usuario;
 
 public class UsuarioActualController {
 

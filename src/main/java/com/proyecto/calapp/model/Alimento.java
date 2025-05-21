@@ -1,4 +1,4 @@
-package model;
+package com.proyecto.calapp.model;
 
 import java.util.Objects;
 public class Alimento {
@@ -13,15 +13,15 @@ public class Alimento {
 
     public Alimento() {}
 
-    public Alimento(int idAlimento, String nombreAlimento, int calorias, double proteinas, double grasas, double carbohidratos, String categoria) {
-        this.idAlimento = idAlimento;
-        this.nombreAlimento = nombreAlimento;
+    public Alimento(String nombre, int calorias, double proteinas, double grasas, double carbohidratos, String categoria) {
+        this.nombreAlimento = nombre;
         this.calorias = calorias;
         this.proteinas = proteinas;
         this.grasas = grasas;
         this.carbohidratos = carbohidratos;
         this.categoria = categoria;
     }
+
 
     public int getIdAlimento() {
         return idAlimento;

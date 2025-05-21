@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="600" prefWidth="800" style="-fx-background-color: #1e1e1e;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proyecto.calapp.Controller.CuentaController">
+
+    <top>
+        <Label style="-fx-font-size: 24px; -fx-text-fill: #3399ff; -fx-padding: 20 0 10 20;" text="Mi Cuenta" />
+    </top>
+
+    <center>
+        <VBox spacing="10" style="-fx-padding: 20;">
+            <HBox spacing="10">
+                <Label style="-fx-text-fill: white;" text="Correo:" />
+                <TextField fx:id="campoEmail" prefWidth="300" />
+            </HBox>
+            <HBox spacing="10">
+                <Label style="-fx-text-fill: white;" text="Nombre:" />
+                <TextField fx:id="campoNombre" prefWidth="300" />
+            </HBox>
+            <HBox spacing="10">
+                <Label style="-fx-text-fill: white;" text="Edad:" />
+                <TextField fx:id="campoEdad" prefWidth="100" />
+            </HBox>
+            <HBox spacing="10">
+                <Label style="-fx-text-fill: white;" text="Peso (kg):" />
+                <TextField fx:id="campoPeso" prefWidth="100" />
+            </HBox>
+            <HBox spacing="10">
+                <Label style="-fx-text-fill: white;" text="Altura (cm):" />
+                <TextField fx:id="campoAltura" prefWidth="100" />
+            </HBox>
+            <HBox spacing="10">
+                <Label style="-fx-text-fill: white;" text="Objetivo Calorías:" />
+                <TextField fx:id="campoCalorias" prefWidth="100" />
+            </HBox>
+            <Button onAction="#guardarCambios" style="-fx-background-color: #ffaa00; -fx-text-fill: black; -fx-font-weight: bold; -fx-padding: 10; -fx-background-radius: 6;" text="Guardar Cambios" />
+        </VBox>
+    </center>
+
+    <bottom>
+        <Button onAction="#volverAPrincipal" style="-fx-background-color: #3399ff; -fx-text-fill: white; -fx-padding: 10; -fx-background-radius: 8; -fx-font-size: 14px; -fx-pref-width: 120;" text="Volver" BorderPane.alignment="CENTER" />
+    </bottom>
+</BorderPane>

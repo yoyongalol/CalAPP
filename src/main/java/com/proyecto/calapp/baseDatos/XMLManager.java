@@ -1,4 +1,4 @@
-package baseDatos;
+package com.proyecto.calapp.baseDatos;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

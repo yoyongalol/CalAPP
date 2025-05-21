@@ -1,4 +1,4 @@
-package model;
+package com.proyecto.calapp.model;
 
 public class AlimentoEntrada {
     private Alimento alimento;

@@ -1,14 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.chart.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<BorderPane xmlns="http://javafx.com/javafx/21.0.2"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+            fx:controller="com.proyecto.calapp.Controller.ProgresoController"
+            prefHeight="700" prefWidth="900"
+            style="-fx-background-color: #1e1e1e;">
 
-</AnchorPane>
+    <top>
+        <VBox spacing="10" style="-fx-padding: 20;">
+            <Label text="Progreso"
+                   style="-fx-font-size: 24px; -fx-text-fill: white;" />
+            <HBox spacing="40">
+                <VBox spacing="2">
+                    <Label text="Promedio" style="-fx-text-fill: #aaaaaa;" />
+                    <Label fx:id="lblPromedio" text="0" style="-fx-text-fill: white; -fx-font-size: 16px;" />
+                </VBox>
+                <VBox spacing="2">
+                    <Label text="Máximo" style="-fx-text-fill: #aaaaaa;" />
+                    <Label fx:id="lblMaximo" text="0" style="-fx-text-fill: white; -fx-font-size: 16px;" />
+                </VBox>
+                <VBox spacing="2">
+                    <Label text="Total" style="-fx-text-fill: #aaaaaa;" />
+                    <Label fx:id="lblTotal" text="0" style="-fx-text-fill: white; -fx-font-size: 16px;" />
+                </VBox>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="20" style="-fx-padding: 15;">
+            <!-- Gráfico de barras -->
+            <BarChart fx:id="barChart" title="Calorías consumidas"
+                      style="-fx-background-color: #2b2b2b;"
+                      categoryGap="10" barGap="3">
+                <xAxis>
+                    <CategoryAxis label="Fecha" style="-fx-tick-label-fill: white;" />
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="Calorías" style="-fx-tick-label-fill: white;" />
+                </yAxis>
+            </BarChart>
+
+            <!-- Tabla de entradas (accesos al sistema) -->
+            <VBox spacing="10">
+                <Label text="Entradas recientes"
+                       style="-fx-text-fill: white; -fx-font-size: 16px;" />
+                <ListView fx:id="listaEntradas" style="-fx-background-color: #2b2b2b; -fx-text-fill: white;" />
+            </VBox>
+        </VBox>
+    </center>
+
+</BorderPane>
+

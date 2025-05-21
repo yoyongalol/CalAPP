@@ -1,9 +1,8 @@
-package DAO;
+package com.proyecto.calapp.DAO;
 
-import model.Alimento;
-import model.AlimentoEntrada;
-import model.EntradaDiaria;
-import baseDatos.ConnectionBD;
+import com.proyecto.calapp.model.Alimento;
+import com.proyecto.calapp.model.AlimentoEntrada;
+import com.proyecto.calapp.baseDatos.ConnectionBD;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,7 +11,7 @@ import java.util.List;
 public class AlimentoEntradaDAO {
 
     // Inserta alimento y cantidad en una entrada diaria
-    public void insertarAlimentoEntrada(int idEntrada, AlimentoEntrada alimentoEntrada) throws SQLException {
+    public static void insertarAlimentoEntrada(int idEntrada, AlimentoEntrada alimentoEntrada) throws SQLException {
         String sql = "INSERT INTO alimento_entrada (id_entrada, id_alimento, cantidad) VALUES (?, ?, ?)";
         try (Connection conn = ConnectionBD.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -24,7 +23,7 @@ public class AlimentoEntradaDAO {
     }
 
     // Devuelve todos los alimentos consumidos en una entrada diaria
-    public List<AlimentoEntrada> obtenerAlimentosPorEntrada(int idEntrada) throws SQLException {
+    public static List<AlimentoEntrada> obtenerAlimentosPorEntrada(int idEntrada) throws SQLException {
         List<AlimentoEntrada> lista = new ArrayList<>();
         String sql = "SELECT a.id, a.nombre, a.calorias, a.proteinas, a.grasas, a.carbohidratos, a.categoria, ae.cantidad " +
                 "FROM Alimento_Entrada ae " +

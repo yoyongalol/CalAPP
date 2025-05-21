@@ -1,4 +1,4 @@
-package model;
+package com.proyecto.calapp.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -7,19 +7,16 @@ import java.util.List;
 public class EntradaDiaria {
     private int id;
     private LocalDate fecha;
-    private Usuario usuario;
+    private String email_usuario;
     private List<AlimentoEntrada> alimentos = new ArrayList<>();
 
     public EntradaDiaria() {
-    }
-
-    public EntradaDiaria(int id, LocalDate fecha, Usuario usuario) {
         this.id = id;
         this.fecha = fecha;
-        this.usuario = usuario;
+        this.email_usuario = email_usuario;
+        this.alimentos = alimentos;
     }
 
-    // Getters y setters
     public int getId() {
         return id;
     }
@@ -36,12 +33,12 @@ public class EntradaDiaria {
         this.fecha = fecha;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public String getEmail_usuario() {
+        return email_usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setEmail_usuario(String email_usuario) {
+        this.email_usuario = email_usuario;
     }
 
     public List<AlimentoEntrada> getAlimentos() {
@@ -51,12 +48,7 @@ public class EntradaDiaria {
     public void setAlimentos(List<AlimentoEntrada> alimentos) {
         this.alimentos = alimentos;
     }
-
-    // Método para calcular calorías totales del día (sumiendo que Alimento tiene getCalorias())
-    public int getCaloriasTotales() {
-        return alimentos.stream()
-                .mapToInt(ae -> (ae.getAlimento().getCalorias() * ae.getCantidad()) / 100)
-                .sum();
-    }
 }
+
+
 

@@ -1,16 +1,17 @@
-package DAO;
+package com.proyecto.calapp.DAO;
 
-import model.Alimento;
-import baseDatos.ConnectionBD;
+import com.proyecto.calapp.model.Alimento;
+import com.proyecto.calapp.baseDatos.ConnectionBD;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AlimentoDAO {
 
     // Inserta un nuevo alimento
-    public void insertar(Alimento alimento) throws SQLException {
+    public static void insertar(Alimento alimento) throws SQLException {
         String sql = "INSERT INTO Alimento (nombre, calorias, proteinas, grasas, carbohidratos, categoria) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = ConnectionBD.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -25,7 +26,7 @@ public class AlimentoDAO {
     }
 
     // Devuelve todos los alimentos de la base de datos
-    public List<Alimento> getTodos() throws SQLException {
+    public static List<Alimento> getTodos() throws SQLException {
         List<Alimento> alimentos = new ArrayList<>();
         String sql = "SELECT * FROM alimento";
         try (Connection conn = ConnectionBD.getConnection();
@@ -95,4 +96,5 @@ public class AlimentoDAO {
             stmt.executeUpdate();
         }
     }
+
 }

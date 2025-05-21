@@ -1,15 +1,16 @@
-import DAO.AlimentoDAO;
-import DAO.AlimentoEntradaDAO;
-import DAO.EntradaDiariaDAO;
-import DAO.UsuarioDAO;
-import model.Alimento;
-import model.AlimentoEntrada;
-import model.EntradaDiaria;
-import model.Usuario;
+/*package com.proyecto.calapp;
+
+import com.proyecto.calapp.DAO.AlimentoDAO;
+import com.proyecto.calapp.DAO.AlimentoEntradaDAO;
+import com.proyecto.calapp.DAO.EntradaDiariaDAO;
+import com.proyecto.calapp.DAO.UsuarioDAO;
+import com.proyecto.calapp.model.Alimento;
+import com.proyecto.calapp.model.AlimentoEntrada;
+import com.proyecto.calapp.model.EntradaDiaria;
+import com.proyecto.calapp.model.Usuario;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -57,3 +58,4 @@ public class PruebaMain {
         }
     }
 }
+*/
