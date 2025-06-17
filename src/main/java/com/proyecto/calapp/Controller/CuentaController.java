@@ -34,7 +34,6 @@ public class CuentaController {
     public void guardarCambios(ActionEvent event) {
         String emailActual = usuarioActual.getEmail();
 
-        // Obtener nuevo email y nombre de los campos correctos
         String nuevoEmail = campoEmail.getText().isEmpty() ? emailActual : campoEmail.getText();
         String nuevoNombre = campoNombre.getText().isEmpty() ? usuarioActual.getNombreUsuario() : campoNombre.getText();
 
@@ -45,7 +44,6 @@ public class CuentaController {
 
         // Actualizar objeto
         usuarioActual.setEmail(nuevoEmail);
-        usuarioActual.setEmailAnterior(emailActual);
         usuarioActual.setNombreUsuario(nuevoNombre);
         usuarioActual.setEdad(edad);
         usuarioActual.setPeso(peso);
@@ -54,7 +52,7 @@ public class CuentaController {
 
         // Guardar en BBDD
         UsuarioDAO dao = new UsuarioDAO();
-        boolean actualizado = dao.actualizar(usuarioActual);
+        boolean actualizado = dao.actualizar(usuarioActual, emailActual);
 
         if (actualizado) {
             System.out.println("Usuario actualizado correctamente.");

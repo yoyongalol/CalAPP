@@ -1,9 +1,6 @@
 package com.proyecto.calapp.Controller;
 
-import com.proyecto.calapp.DAO.UsuarioDAO;
-import javafx.event.ActionEvent;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.layout.AnchorPane;
+import com.proyecto.calapp.DAO.AlimentoUsuarioDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,11 +11,14 @@ import javafx.scene.control.ProgressBar;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class PantallaPrincipalController {
     private com.proyecto.calapp.model.Usuario usuarioActual;
 
+    @FXML private Label lblCaloriasRestantes;
+    @FXML private Label lblAlimentos;
+    @FXML private Label lblObjetivo;
+    @FXML private Label lblEjercicio;
 
     @FXML
     private Button btnPanel;
@@ -33,12 +33,23 @@ public class PantallaPrincipalController {
     private Button btnMas;
 
     @FXML
+    private Label lblCalorias;
+
+    @FXML
     private Button btnAgregar;
 
     @FXML
     private void initialize() {
-        lblCaloriasRestantes.setText(String.valueOf(UsuarioActualController.getInstancia().getUsuarioActual().getObjetivoCalorias()));
+        lblCalorias.setText(String.valueOf(UsuarioActualController.getInstancia().getUsuarioActual().getObjetivoCalorias()));
+        if (usuarioActual != null) {
+            lblCalorias.setText(String.valueOf(usuarioActual.getObjetivoCalorias()));
+            int caloriasHoy = AlimentoUsuarioDAO.obtenerCaloriasConsumidasHoy(usuarioActual.getEmail());
+            actualizarLabelCalorias(usuarioActual.getObjetivoCalorias() - caloriasHoy);
+        } else {
+            System.err.println("usuarioActual no fue seteado antes de initialize()");
+        }
     }
+
 
     @FXML
     private void manejarPanel() {
@@ -68,18 +79,14 @@ public class PantallaPrincipalController {
     private ProgressBar barraCalorias;
 
     @FXML
-    private Label lblProgreso;
-
+    private Label getLblCaloriasRestantes;
     @FXML
-    public void actualizarCalorias(int caloriasConsumidas, int objetivoCalorias) {
-        if (objetivoCalorias <= 0) return;
-        double progreso = (double) caloriasConsumidas / objetivoCalorias;
-        progreso = Math.min(progreso, 1.0);
+    private Label labelCalorias;
 
-        barraCalorias.setProgress(progreso);
-        lblCaloriasRestantes.setText(String.valueOf(UsuarioActualController.getInstancia().getUsuarioActual().getObjetivoCalorias()));
-
+    public void actualizarLabelCalorias(int caloriasRestantes) {
+        labelCalorias.setText("Calorías restantes hoy: " + caloriasRestantes);
     }
+
 
     @FXML
     private void abrirPantallaAgregar() {
@@ -87,7 +94,6 @@ public class PantallaPrincipalController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com.proyecto.calapp/pantallaSeleccionAlimentos.fxml"));
             Parent root = loader.load();
 
-            // PASA EL CONTROLADOR PRINCIPAL
             SeleccionAlimentosController controller = loader.getController();
             controller.setPantallaPrincipalController(this);
 
@@ -118,19 +124,11 @@ public class PantallaPrincipalController {
             e.printStackTrace();
         }
     }
-
-    @FXML
-    private Label lblCaloriasRestantes;
-
     public void actualizarCaloriasRestantes(int restantes) {
         lblCaloriasRestantes.setText(String.valueOf(restantes));
     }
     public void setUsuarioActual(com.proyecto.calapp.model.Usuario usuario) {
         this.usuarioActual = usuario;
-    }
-
-    public void cargarCalorias () throws SQLException {
-        lblCaloriasRestantes.setText(String.valueOf(UsuarioDAO.obtenerObjetivoCaloriasPorEmail(usuarioActual.getEmail())));
     }
 
     @FXML

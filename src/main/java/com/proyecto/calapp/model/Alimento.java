@@ -1,42 +1,44 @@
 package com.proyecto.calapp.model;
-
+import com.proyecto.calapp.model.Usuario;
 import java.util.Objects;
 public class Alimento {
 
-    private int idAlimento;
-    private String nombreAlimento;
+    private int id;
+    private String nombre;
     private int calorias;
     private double proteinas;
     private double grasas;
     private double carbohidratos;
     private String categoria;
+    private String emailAdmin;
+    private Usuario usuario;
 
     public Alimento() {}
 
-    public Alimento(String nombre, int calorias, double proteinas, double grasas, double carbohidratos, String categoria) {
-        this.nombreAlimento = nombre;
+    public Alimento(String nombre, int calorias, double proteinas, double grasas, double carbohidratos, String categoria, Usuario usuario) {
+        this.nombre = nombre;
         this.calorias = calorias;
         this.proteinas = proteinas;
         this.grasas = grasas;
         this.carbohidratos = carbohidratos;
         this.categoria = categoria;
+        this.usuario = usuario;
     }
 
-
-    public int getIdAlimento() {
-        return idAlimento;
+    public int getId() {
+        return id;
     }
 
-    public void setIdAlimento(int idAlimento) {
-        this.idAlimento = idAlimento;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getNombreAlimento() {
-        return nombreAlimento;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNombreAlimento(String nombreAlimento) {
-        this.nombreAlimento = nombreAlimento;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public int getCalorias() {
@@ -79,11 +81,27 @@ public class Alimento {
         this.categoria = categoria;
     }
 
+    public String getEmailAdmin() {
+        return emailAdmin;
+    }
+
+    public void setEmailAdmin(String emailAdmin) {
+        this.emailAdmin = emailAdmin;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
     @Override
     public String toString() {
         return "Alimento{" +
-                "idAlimento=" + idAlimento +
-                ", nombreAlimento='" + nombreAlimento + '\'' +
+                "idAlimento=" + id +
+                ", nombreAlimento='" + nombre + '\'' +
                 ", calorias=" + calorias +
                 ", proteinas=" + proteinas +
                 ", grasas=" + grasas +
@@ -95,10 +113,10 @@ public class Alimento {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Alimento alimento = (Alimento) o;
-        return idAlimento == alimento.idAlimento && calorias == alimento.calorias && Double.compare(alimento.proteinas, proteinas) == 0 && Double.compare(alimento.grasas, grasas) == 0 && Double.compare(alimento.carbohidratos, carbohidratos) == 0 && Objects.equals(nombreAlimento, alimento.nombreAlimento) && Objects.equals(categoria, alimento.categoria);
+        return id == alimento.id && calorias == alimento.calorias && Double.compare(alimento.proteinas, proteinas) == 0 && Double.compare(alimento.grasas, grasas) == 0 && Double.compare(alimento.carbohidratos, carbohidratos) == 0 && Objects.equals(nombre, alimento.nombre) && Objects.equals(categoria, alimento.categoria);
     }
     @Override
     public int hashCode() {
-        return Objects.hash(idAlimento, nombreAlimento, calorias, proteinas, grasas, carbohidratos, categoria);
+        return Objects.hash(id, nombre, calorias, proteinas, grasas, carbohidratos, categoria);
     }
 }

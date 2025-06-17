@@ -26,13 +26,13 @@
                 <Label style="-fx-text-fill: #aaaaaa;" text="Restantes = Objetivo - Alimentos + Ejercicio" />
                 <HBox spacing="60">
                     <VBox spacing="5">
-                        <Label fx:id="lblCaloriasRestantes" style="-fx-text-fill: white; -fx-font-size: 28px;" text="1000" />
+                        <Label fx:id="lblCalorias" style="-fx-text-fill: white; -fx-font-size: 28px;" text="1000" />
                         <Label style="-fx-text-fill: #999;" text="Restantes" />
                     </VBox>
                     <VBox spacing="8">
-                        <Label style="-fx-text-fill: white;" text="Objetivo base: 1935" />
-                        <Label style="-fx-text-fill: #3399ff;" text="Alimentos: 0" />
-                        <Label style="-fx-text-fill: #ffaa00;" text="Ejercicio: 5" />
+                        <Label fx:id="lblObjetivo" style="-fx-text-fill: white;" text="Objetivo base: 1935" />
+                        <Label fx:id="lblAlimentos" style="-fx-text-fill: #3399ff;" text="Alimentos: 0" />
+                        <Label fx:id="lblEjercicio" style="-fx-text-fill: #ffaa00;" text="Ejercicio: 5" />
                     </VBox>
                 </HBox>
 

@@ -108,7 +108,7 @@ public class UsuarioDAO {
     }
 
 
-    public boolean actualizar(Usuario usuario) {
+    public boolean actualizar(Usuario usuario, String emailActual) {
         Connection conn = null;
         PreparedStatement checkStmt = null;
         PreparedStatement updateStmt = null;
@@ -118,7 +118,7 @@ public class UsuarioDAO {
             conn = ConnectionBD.getConnection();
 
             // Si el usuario quiere cambiar el email
-            if (!usuario.getEmail().equals(usuario.getEmailAnterior())) {
+            if (!usuario.getEmail().equals(emailActual)) {
                 String checkSql = "SELECT email FROM usuario WHERE email = ?";
                 checkStmt = conn.prepareStatement(checkSql);
                 checkStmt.setString(1, usuario.getEmail());
@@ -130,7 +130,7 @@ public class UsuarioDAO {
                 }
             }
 
-            // Ahora se realiza el UPDATE
+            // Realizar el UPDATE
             String updateSql = "UPDATE usuario SET email = ?, nombre = ?, edad = ?, peso = ?, altura = ?, objetivo_calorias = ? WHERE email = ?";
             updateStmt = conn.prepareStatement(updateSql);
             updateStmt.setString(1, usuario.getEmail());
@@ -139,7 +139,7 @@ public class UsuarioDAO {
             updateStmt.setDouble(4, usuario.getPeso());
             updateStmt.setDouble(5, usuario.getAltura());
             updateStmt.setInt(6, usuario.getObjetivoCalorias());
-            updateStmt.setString(7, usuario.getEmailAnterior());
+            updateStmt.setString(7, emailActual); // Este es el email anterior
 
             int filas = updateStmt.executeUpdate();
             return filas > 0;
@@ -148,25 +148,13 @@ public class UsuarioDAO {
             e.printStackTrace();
             return false;
         } finally {
-            // Cerrar recursos
-            try {
-                if (rs != null) rs.close();
-            } catch (Exception ignored) {
-            }
-            try {
-                if (checkStmt != null) checkStmt.close();
-            } catch (Exception ignored) {
-            }
-            try {
-                if (updateStmt != null) updateStmt.close();
-            } catch (Exception ignored) {
-            }
-            try {
-                if (conn != null) conn.close();
-            } catch (Exception ignored) {
-            }
+            try { if (rs != null) rs.close(); } catch (Exception ignored) {}
+            try { if (checkStmt != null) checkStmt.close(); } catch (Exception ignored) {}
+            try { if (updateStmt != null) updateStmt.close(); } catch (Exception ignored) {}
+            try { if (conn != null) conn.close(); } catch (Exception ignored) {}
         }
     }
+
 
     public static int obtenerObjetivoCaloriasPorEmail(String email) throws SQLException {
         String sql = "SELECT objetivo_calorias FROM usuario WHERE email = ?";

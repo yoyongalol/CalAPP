@@ -1,23 +1,26 @@
 package com.proyecto.calapp.Controller;
-
 import com.proyecto.calapp.DAO.AlimentoDAO;
-import com.proyecto.calapp.DAO.AlimentoEntradaDAO;
-import com.proyecto.calapp.DAO.EntradaDiariaDAO;
+import com.proyecto.calapp.DAO.AlimentoUsuarioDAO;
 import com.proyecto.calapp.DAO.UsuarioDAO;
+import com.proyecto.calapp.baseDatos.ConnectionBD;
 import com.proyecto.calapp.model.Alimento;
-import com.proyecto.calapp.model.AlimentoEntrada;
+import com.proyecto.calapp.model.AlimentoUsuario;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.proyecto.calapp.baseDatos.ConnectionBD.getConnection;
 
 public class SeleccionAlimentosController {
     @FXML private AlimentoDAO alimentoDAO = new AlimentoDAO();
     @FXML private UsuarioDAO usuarioDAO = new UsuarioDAO();
-    @FXML private EntradaDiariaDAO entradaDiariaDAO = new EntradaDiariaDAO();
     @FXML private ProgressBar barraCalorias;
     @FXML private Label lblProgreso;
     @FXML private String emailUsuario;
@@ -56,21 +59,66 @@ public class SeleccionAlimentosController {
     public void buscarAlimento() {
         String texto = campoBuscar.getText().toLowerCase().trim();
         List<Alimento> filtrados = alimentosTotales.stream()
-                .filter(a -> a.getNombreAlimento().toLowerCase().contains(texto))
+                .filter(a -> a.getNombre().toLowerCase().contains(texto))
                 .collect(Collectors.toList());
         cargarLista(filtrados);
     }
 
-    @FXML
-    private void cargarLista(List<Alimento> lista) {
+    private List<Alimento> alimentosVisibles = new ArrayList<>();
+
+    private void cargarLista(List<Alimento> alimentos) {
         listaAlimentos.getItems().clear();
-        for (Alimento a : lista) {
-            listaAlimentos.getItems().add(a.getNombreAlimento() + " (" + a.getCalorias() + " cal)");
+        alimentosVisibles.clear();
+
+        for (Alimento alimento : alimentos) {
+            listaAlimentos.getItems().add(alimento.getNombre());
+            alimentosVisibles.add(alimento);
         }
     }
 
     @FXML
-    public void registrarAlimento() {
+    private void añadirAlimento() {
+        int index = listaAlimentos.getSelectionModel().getSelectedIndex();
+        if (index < 0) return;
+
+        Alimento alimentoSeleccionado = alimentosVisibles.get(index);
+
+        // Crear el objeto AlimentoUsuario
+        AlimentoUsuario nuevo = new AlimentoUsuario(
+                UsuarioActualController.getInstancia().getUsuarioActual(),
+                alimentoSeleccionado,
+                new Date(),
+                1
+        );
+
+        // Registrar el alimento consumido
+        AlimentoUsuarioDAO dao = new AlimentoUsuarioDAO(getConnection());
+        dao.registrarConsumo(nuevo);
+
+        // Obtener el total de calorías consumidas hoy por el usuario
+        int caloriasHoy = dao.obtenerCaloriasConsumidasHoy(
+                UsuarioActualController.getInstancia().getUsuarioActual().getEmail()
+        );
+
+        // Obtener el objetivo diario del usuario
+        int objetivo = UsuarioActualController.getInstancia().getUsuarioActual().getObjetivoCalorias();
+
+        // Calcular las calorías restantes
+        int caloriasRestantes = objetivo - caloriasHoy;
+
+        // Actualizar el label en la pantalla principal
+        if (pantallaPrincipalController != null) {
+            pantallaPrincipalController.actualizarLabelCalorias(caloriasRestantes);
+        } else {
+            System.err.println("pantallaPrincipalController es null");
+        }
+    }
+
+
+
+
+    @FXML
+    private void registrarAlimento(ActionEvent event) {
         try {
             String nombre = campoNombre.getText();
             int calorias = Integer.parseInt(campoCalorias.getText());
@@ -79,72 +127,63 @@ public class SeleccionAlimentosController {
             double carbohidratos = Double.parseDouble(campoCarbohidratos.getText());
             String categoria = campoCategoria.getText();
 
-            Alimento nuevo = new Alimento(nombre, calorias, proteinas, grasas, carbohidratos, categoria);
-            AlimentoDAO.insertar(nuevo);
+            Alimento nuevoAlimento = new Alimento();
+            nuevoAlimento.setNombre(nombre);
+            nuevoAlimento.setCalorias(calorias);
+            nuevoAlimento.setGrasas(grasas);
+            nuevoAlimento.setProteinas(proteinas);
+            nuevoAlimento.setCarbohidratos(carbohidratos);
+            nuevoAlimento.setCategoria(categoria);
 
-            // Refrescar lista
+            alimentoDAO.insertar(nuevoAlimento);
+
+            // Actualiza la lista
             alimentosTotales = AlimentoDAO.getTodos();
             cargarLista(alimentosTotales);
 
-            // Limpiar campos
+            // Opcional: limpia los campos
             campoNombre.clear();
             campoCalorias.clear();
             campoProteinas.clear();
             campoGrasas.clear();
             campoCarbohidratos.clear();
             campoCategoria.clear();
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            System.out.println("Alimento registrado correctamente.");
+
+        } catch (NumberFormatException e) {
+            System.out.println("Error: formato numérico incorrecto.");
+        } catch (SQLException e) {
+            System.out.println("Error al registrar el alimento: " + e.getMessage());
         }
     }
+
 
     @FXML
-    public void agregarSeleccionados() {
-        List<String> seleccionados = listaAlimentos.getSelectionModel().getSelectedItems();
-        System.out.println("Seleccionados: " + seleccionados);
-    }
+    public void eliminarAlimento () {
+        List<Integer> indices = listaAlimentos.getSelectionModel().getSelectedIndices();
 
-    @FXML
-    public void agregarAlimentos (Alimento alimento, int cantidad) throws SQLException {
-
-        int idEntrada = entradaDiariaDAO.obtenerIdEntradaDiaria(emailUsuario, LocalDate.now());
-        if (idEntrada == -1) {
-            idEntrada = entradaDiariaDAO.insertarEntrada(emailUsuario, LocalDate.now());
+        if (indices.isEmpty()) {
+            System.out.println("Error: No hay alimentos seleccionados para eliminar.");
+            return;
         }
 
-        // 2. Crear objeto AlimentoEntrada
-        AlimentoEntrada entrada = new AlimentoEntrada();
-        entrada.setAlimento(alimento);
-        entrada.setCantidad(cantidad);
-
-        // 3. Insertar alimento en esa entrada
-        AlimentoEntradaDAO.insertarAlimentoEntrada(idEntrada, entrada);
-
-        // 4. Calcular calorías totales consumidas en el día
-        List<AlimentoEntrada> alimentosDelDia = AlimentoEntradaDAO.obtenerAlimentosPorEntrada(idEntrada);
-        int caloriasConsumidas = 0;
-        for (AlimentoEntrada ae : alimentosDelDia) {
-            caloriasConsumidas += ae.getAlimento().getCalorias() * ae.getCantidad();
+        for (Integer index : indices) {
+            Alimento alimento = alimentosVisibles.get(index);
+            try {
+                alimentoDAO.eliminarPorId(alimento.getId());
+                alimentosTotales.remove(alimento); // también lo eliminas de la lista global
+            } catch (SQLException e) {
+                System.out.println("Error: No se pudo eliminar el alimento: " + alimento.getNombre());
+            }
         }
 
-        // 5. Obtener objetivo calorías
-        int objetivo = usuarioDAO.obtenerObjetivoCaloriasPorEmail(emailUsuario);
-
-        // 6. Actualizar barra
-        if (pantallaPrincipalController != null) {
-            pantallaPrincipalController.actualizarCalorias(caloriasConsumidas, objetivo);
-        }
-
+        // Recargar la lista para reflejar cambios
+        cargarLista(alimentosTotales);
     }
 
-    @FXML
-    public void actualizarBarraCalorias(int consumidas, int objetivo) {
-        if (objetivo <= 0) return;
-        double progreso = (double) consumidas / objetivo;
-        progreso = Math.min(progreso, 1.0);
-
-        barraCalorias.setProgress(progreso);
-        lblProgreso.setText((int)(progreso * 100) + "%");
-    }
 }
+
+
+
 

@@ -25,8 +25,12 @@
             <Label text="Selecciona alimentos" style="-fx-text-fill: white; -fx-font-size: 16px;" />
             <ListView fx:id="listaAlimentos"
                       style="-fx-background-color: #2b2b2b; -fx-control-inner-background: #2b2b2b; -fx-text-fill: white;" />
-            <Button text="Añadir seleccionados" onAction="#agregarSeleccionados"
+            <Button text="Añadir seleccionados" onAction="#añadirAlimento"
                     style="-fx-background-color: #3399ff; -fx-text-fill: white;" />
+            <Button fx:id="btnEliminarAlimento"
+                    text="Eliminar seleccionado"
+                    onAction="#eliminarAlimento"
+                    style="-fx-background-color: #ff5555; -fx-text-fill: white; -fx-background-radius: 8;" />
         </VBox>
     </center>
 

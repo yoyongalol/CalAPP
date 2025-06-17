@@ -39,7 +39,7 @@ public class InicioSesionController {
 
                 // Obtener el controlador y pasarle el usuario logueado
                 PantallaPrincipalController controller = loader.getController();
-                controller.setUsuarioActual(usuario);
+                controller.setUsuarioActual(UsuarioActualController.getInstancia().getUsuarioActual());
 
                 Stage stage = (Stage) campoEmail.getScene().getWindow();
                 stage.setScene(new Scene(root));

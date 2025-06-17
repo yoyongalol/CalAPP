@@ -1,25 +1,48 @@
 package com.proyecto.calapp.Controller;
 
-import com.proyecto.calapp.model.EntradaDiaria;
 import com.proyecto.calapp.model.Usuario;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-
-import java.util.List;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.Label;
 
 public class ProgresoController {
+    private Usuario usuario;
+
     @FXML
-    private void cargarLista () {
-        // Obtener la lista de entradas diarias del usuario actual
+    private BarChart<String, Number> barChart;
 
-        // Aquí puedes hacer lo que necesites con la lista de entradas diarias
-        //for (EntradaDiaria entrada : entradasDiarias) {
-            //System.out.println("Fecha: " + entrada.getFecha());
-            // Puedes acceder a otros atributos de EntradaDiaria según sea necesario
+    @FXML
+    private Label lblPromedio, lblMaximo, lblTotal;
 
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+        cargarDatosDelUsuario();
     }
 
-    @FXML private Button btnProgreso;
-    public void setUsuario(Usuario usuario) {
+    public void initialize() {
+        if (usuario != null) {
+            cargarDatosDelUsuario();
+        }
+    }
+
+    private void cargarDatosDelUsuario() {
+        if (usuario == null) return;
+
+        String nombreUsuario = usuario.getNombreUsuario();
+        int calorias = usuario.getObjetivoCalorias();
+
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName(nombreUsuario);
+        series.getData().add(new XYChart.Data<>(nombreUsuario, calorias));
+
+        barChart.getData().clear();
+        barChart.getData().add(series);
+
+        lblTotal.setText(String.valueOf(calorias));
+        lblMaximo.setText(String.valueOf(calorias));
+        lblPromedio.setText(String.valueOf(calorias));
     }
 }
+
+

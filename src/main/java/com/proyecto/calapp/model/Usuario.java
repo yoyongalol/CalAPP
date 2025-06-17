@@ -1,5 +1,6 @@
 package com.proyecto.calapp.model;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Usuario {
@@ -11,9 +12,10 @@ public class Usuario {
     private double peso;
     private double altura;
     private int objetivoCalorias;
-    private String emailAnterior;
+    private String rol;
+    private List<Alimento> alimentos;
 
-    public Usuario () {}
+    public Usuario() {}
 
     public Usuario(String email, String contraseña, String nombreUsuario, int edad, double peso, double altura, int objetivoCalorias) {
         this.email = email;
@@ -23,7 +25,7 @@ public class Usuario {
         this.peso = peso;
         this.altura = altura;
         this.objetivoCalorias = objetivoCalorias;
-        this.emailAnterior = email;
+        this.rol = "usuario";
     }
 
     public String getEmail() {
@@ -82,29 +84,7 @@ public class Usuario {
         this.objetivoCalorias = objetivoCalorias;
     }
 
-    public String getEmailAnterior() {
-        return emailAnterior;
-    }
-
-    public void setEmailAnterior(String emailAnterior) {
-        this.emailAnterior = emailAnterior;
-    }
-
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "email='" + email + '\'' +
-                ", contraseña='" + contraseña + '\'' +
-                ", nombreUsuario='" + nombreUsuario + '\'' +
-                ", edad=" + edad +
-                ", peso=" + peso +
-                ", altura=" + altura +
-                ", objetivoCalorias=" + objetivoCalorias +
-                ", emailAnterior='" + emailAnterior + '\'' +
-                '}';
-    }
-
-    @Override
+@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Usuario)) return false;
@@ -120,7 +100,7 @@ public class Usuario {
 
     @Override
     public int hashCode() {
-        return Objects.hash(email,contraseña ,nombreUsuario, edad, peso, altura, objetivoCalorias);
+        return Objects.hash(email,contraseña ,nombreUsuario, edad, peso, altura, objetivoCalorias, rol);
     }
 
 }

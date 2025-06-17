@@ -12,7 +12,7 @@ public class test {
         usuarioDAO.insertar(usuario);
         Usuario usuarioNuevo = new Usuario ("Pepe", "5545", "Pepe", 20, 70, 1.75, 2000);
         usuario.setEmail("Peppe");
-        System.out.println(usuarioDAO.actualizar(usuario));
+        System.out.println(usuarioDAO.actualizar(usuarioNuevo, usuario.getEmail()));
 
     }
 }
